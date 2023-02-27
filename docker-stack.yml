@@ -1,0 +1,27 @@
+# this file is meant for Docker Swarm stacks only
+# trying it in compose will fail because of multiple replicas trying to bind to the same port
+# Swarm currently does not support Compose Spec, so we'll pin to the older version 3.9
+
+version: "3.9"
+
+services:
+
+  master:
+    image: pathsofglorywolfmilk/master2
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_NAME: "{{.Node.Hostname}}"
+    # image: 1-master
+    # ports:
+    #   - "3000:3000"
+
+  slave:
+    image: pathsofglorywolfmilk/slave2
+    deploy:
+      replicas: 2
+    environment:
+      NODE_NAME: "{{.Node.Hostname}}"
+    # image: 1-slave
+    # deploy:
+    #   replicas: 2
